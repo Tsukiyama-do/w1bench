@@ -35,7 +35,7 @@ int main(void)
         mvwprintw(ru_win, 4,1, "Date         :");   //   
     mvwprintw(lu_win, 1,1, "Left top win");   // labelling left top  
         mvwprintw(lu_win, 2,1, "道はあるようで無い :");   //   
-        mvwprintw(lu_win, 3,1, "本を読む           :");   //   
+        mvwprintw(lu_win, 3,1, "本を読む          :");   //   
         mvwprintw(lu_win, 4,1, "銚子電鉄に乗りたい :");   //   
     mvwprintw(by_win, 1,1, "Body win");   // labelling body 
     mvwprintw(btm_win, 1,1, "Bottom win yMax : %d, xMax : %d", yMax, xMax);   // labelling bottom   
