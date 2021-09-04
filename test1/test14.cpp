@@ -33,11 +33,15 @@ int main(void)
     mvwprintw(ru_win, 1,1, "Right top win");   // labelling right top  
         mvwprintw(ru_win, 2,1, "File Name    :");   //   
         mvwprintw(ru_win, 3,1, "Your Name    :");   //   
-        mvwprintw(ru_win, 4,1, "Date         :");   //   
+        mvwprintw(ru_win, 4,1, "Planet Name  :");   //   
+        mvwprintw(ru_win, 5,1, "Need Oxygen  :");   //   
+        mvwprintw(ru_win, 6,1, "Sleep hours  :");   //   
     mvwprintw(lu_win, 1,1, "Left top win");   // labelling left top  
         mvwprintw(lu_win, 2,1, "道はあるようで無い :");   //   
-        mvwprintw(lu_win, 3,1, "本を読む           :");   //   
-        mvwprintw(lu_win, 4,1, "銚子電鉄に乗りたい :");   //   
+        mvwprintw(lu_win, 3,1, "問題に対応しない   :");   //   
+        mvwprintw(lu_win, 4,1, "銚子電鉄　　　　　 :");   //   
+        mvwprintw(lu_win, 5,1, "上善水ﾉｺﾞﾄｼ　　　 :");   //   
+        mvwprintw(lu_win, 6,1, "魚の権利　　　　　 :");   //   
     mvwprintw(by_win, 1,1, "Body win");   // labelling body 
     mvwprintw(btm_win, 1,1, "Bottom win yMax : %d, xMax : %d", yMax, xMax);   // labelling bottom   
 
@@ -51,7 +55,7 @@ int main(void)
     keypad(btm_win, TRUE);  // Function Key get available.
 
 
-    char ru_str[5][15];    //  入力したものの入れ場所
+    char ru_str[5][45];    //  入力したものの入れ場所
     char lu_str[5][45];     //  入力したものの入れ場所
 //    char by_str[5][15];     //  入力したものの入れ場所
     int i_ru = 0, i_lu = 0, i_by = 0, j_ru = 0, j_lu = 0, j_by = 0;
@@ -63,7 +67,7 @@ int main(void)
     wrefresh(cur_win);     // WINDOWS再表示
     int c;                //  wgetchを受入る変数
     bool wflag = true;   //  while loop control
-    bool flag_j = false;
+    bool flag_j = false;  // Japanese input or not
     while( wflag) {
         if (flag_j == true) {     // Japanese
             c = wgetstr(cur_win,c_str);   // Multibyte area string
@@ -72,15 +76,25 @@ int main(void)
                         if (cur_win == ru_win) {
                         } else if( cur_win == lu_win) {
                             strcpy(lu_str[i_lu],c_str);   // Arrayに1文字を入れる
-                            i_lu++;
-                            wmove(cur_win,i_lu + 2, 22);   //  次の行へ移動
+                            mvwprintw(cur_win, i_lu + 2, 22,lu_str[i_lu]);  // 値の再設定
+                            i_lu++;        // 次の行への移動準備
+                            if (i_lu == 5 ) {    //  配列の上限
+                                i_ru = 0;
+                                j_ru = 0;
+                                cur_win = ru_win;    // right window 設定
+                                flag_j = false;    // Non-Japanese　設定
+                                wmove(cur_win,i_ru + 2, 15);   //  right winへ移動
+                            } else {
+                                wmove(cur_win,i_lu + 2, 22);   //  次の行へ移動
+                            }
                         } else {
                         }
                     break;
                 case ERR :
                         if (cur_win == ru_win) {
                         } else if( cur_win == lu_win) {
-                            wmove(cur_win,i_lu + 2, 22);   //  次の行へ移動
+                            mvwprintw(cur_win, i_lu + 7, 10, c_str);
+                            wmove(cur_win,i_lu + 2, 22);   //  元の行へ移動
                         } else {
                         }
                         break;
@@ -92,19 +106,30 @@ int main(void)
                 case '\n' :
                         if (cur_win == ru_win) {
                             ru_str[i_ru][j_ru] = '\0';   // LFを入れる
+                            mvwprintw(cur_win, i_ru + 2, 15, ru_str[i_ru]);  //  画面に再設定
                             i_ru++;                      //  次の入れ物へ
                             j_ru = 0;                     //  最初の桁にリセット
-                            wmove(cur_win,i_ru + 2, 15);   //  次の行へ移動
+                            if (i_ru == 5 ) {    //  配列の上限
+                                i_lu = 0;
+                                cur_win = lu_win;    // left window 設定
+                                flag_j = true;    // Japanese　設定
+                                wmove(cur_win,i_lu + 2, 22);   //  right winへ移動
+                            } else {
+                                wmove(cur_win,i_ru + 2, 15);   //  次の行へ移動
+                            }
                         } else if( cur_win == lu_win) {
                         } else {
                         }
                         break;
-                case KEY_F(9) :                 //  次のカーソルに移動させる
+                case KEY_F(9) :                 //  次のSUB WINDOWに移動させる
                         if (cur_win == ru_win){
                             cur_win = lu_win;
                             flag_j = true;      // Japanese area
                             wmove(cur_win, i_lu + 2,22);
                         } else if( cur_win == lu_win) {
+                            cur_win = ru_win;
+                            flag_j = false;      // Japanese area
+                            wmove(cur_win, i_ru + 2,22);
                         }
                         break;
                 case KEY_F(8) :                    //  入力ループを抜ける
