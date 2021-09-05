@@ -44,6 +44,7 @@ int main(void)
         mvwprintw(lu_win, 6,1, "魚の権利　　　　　 :");   //   
     mvwprintw(by_win, 1,1, "Body win");   // labelling body 
     mvwprintw(btm_win, 1,1, "Bottom win yMax : %d, xMax : %d", yMax, xMax);   // labelling bottom   
+        mvwprintw(btm_win, 2,1, "END by F9 (SAVE:Y DISCARD:N) : ");   //   
 
     wrefresh(ru_win);
     wrefresh(lu_win);
@@ -57,8 +58,9 @@ int main(void)
 
     char ru_str[5][45];    //  入力したものの入れ場所
     char lu_str[5][45];     //  入力したものの入れ場所
+    char btm_str[2];        //  入力したものの入れ場所
 //    char by_str[5][15];     //  入力したものの入れ場所
-    int i_ru = 0, i_lu = 0, i_by = 0, j_ru = 0, j_lu = 0, j_by = 0;
+    int i_ru = 0, i_lu = 0, i_by = 0, j_ru = 0, j_lu = 0, j_by = 0, i_btm = 0;
 
     WINDOW * cur_win;    //  カーソルのいるWINDOW
     cur_win = ru_win;      //  カーソルのいるWINDOW
@@ -81,9 +83,9 @@ int main(void)
                             if (i_lu == 5 ) {    //  配列の上限
                                 i_ru = 0;
                                 j_ru = 0;
-                                cur_win = ru_win;    // right window 設定
+                                cur_win = btm_win;    // bottom window 設定
                                 flag_j = false;    // Non-Japanese　設定
-                                wmove(cur_win,i_ru + 2, 15);   //  right winへ移動
+                                wmove(cur_win,2, 31);   //  bottom winへ移動
                             } else {
                                 wmove(cur_win,i_lu + 2, 22);   //  次の行へ移動
                             }
@@ -118,18 +120,38 @@ int main(void)
                                 wmove(cur_win,i_ru + 2, 15);   //  次の行へ移動
                             }
                         } else if( cur_win == lu_win) {
+                        } else if( cur_win == btm_win) {
+                            btm_str[1] = '\0';   // LFを入れる
+                            mvwprintw(cur_win, 2, 31, btm_str);  //  画面に再設定
+                            cur_win = ru_win;     // move to right window
+                            i_ru = 0;             //  配列の最初の値
+                            j_ru = 0;              //  配列の最初の値
+                            wmove(cur_win,i_ru + 2, 15);   //  right windowの最初のフィールドへ移動
                         } else {
                         }
                         break;
                 case KEY_F(9) :                 //  次のSUB WINDOWに移動させる
-                        if (cur_win == ru_win){
-                            cur_win = lu_win;
-                            flag_j = true;      // Japanese area
-                            wmove(cur_win, i_lu + 2,22);
-                        } else if( cur_win == lu_win) {
-                            cur_win = ru_win;
-                            flag_j = false;      // Japanese area
-                            wmove(cur_win, i_ru + 2,22);
+                        // if (cur_win == ru_win){
+                        //     cur_win = lu_win;
+                        //     flag_j = true;      // Japanese area
+                        //     wmove(cur_win, i_lu + 2,22);
+                        // } else if( cur_win == lu_win) {
+                        //     cur_win = ru_win;
+                        //     flag_j = false;      // Japanese area
+                        //     wmove(cur_win, i_ru + 2,22);
+                        // }
+                        if (cur_win == btm_win ) {
+                            btm_str[1] = '\0';   // LFを入れる
+                            if (btm_str[0] == 'Y') {
+                               mvwprintw(cur_win, 2, 40, "DATA SAVED WITH SUCCESS");  //  画面にメッセージを出す
+                            } else if (btm_str[0] == 'N') {
+                               mvwprintw(cur_win, 2, 40, "DATA DISCARDED         ");  //  画面にメッセージを出す
+                            } else if (btm_str[0] == '\0' ) {
+                            } else {
+                               mvwprintw(cur_win, 2, 40, "INVALID DATA           ");  //  画面にメッセージを出す
+                            }
+                            btm_str[0] = '\0';      //  受け変数を初期化
+                            mvwprintw(cur_win, 2, 31, " ");  //  入力フィールドを初期化
                         }
                         break;
                 case KEY_F(8) :                    //  入力ループを抜ける
@@ -141,6 +163,9 @@ int main(void)
                             j_ru++;
                             wmove(cur_win,i_ru + 2, j_ru +15);   //  次の行へ移動
                         } else if( cur_win == lu_win) {
+                        } else if( cur_win == btm_win) {
+                            btm_str[0] = c;
+                            wmove(cur_win,2, 31);   //   カーソルを元に戻す
                         } else {
                         }
                     break;
