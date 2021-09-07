@@ -124,8 +124,8 @@ int main(void)
                             btm_str[1] = '\0';   // LFを入れる
                             mvwprintw(cur_win, 2, 31, btm_str);  //  画面に再設定
                             cur_win = ru_win;     // move to right window
-                            i_ru = 0;             //  配列の最初の値
-                            j_ru = 0;              //  配列の最初の値
+                            i_ru = 0;           //  配列の最初の値
+                            j_ru = 0;           //  配列の最初の値
                             wmove(cur_win,i_ru + 2, 15);   //  right windowの最初のフィールドへ移動
                         } else {
                         }
