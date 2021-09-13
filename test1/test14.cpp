@@ -7,6 +7,8 @@
 #define BOARD_ROWS BOARD_DIM 
 #define BOARD_COLS BOARD_DIM * 2.5
 #define ESC 0x1b
+#define FIELD_RESET "                                   "    //  入力フィールドを初期化
+
 
 int main(void)
 {
@@ -56,8 +58,8 @@ int main(void)
     keypad(btm_win, TRUE);  // Function Key get available.
 
 
-    char ru_str[5][45];    //  入力したものの入れ場所
-    char lu_str[5][45];     //  入力したものの入れ場所
+    char ru_str[5][36];    //  入力したものの入れ場所
+    char lu_str[5][36];     //  入力したものの入れ場所
     char btm_str[2];        //  入力したものの入れ場所
 //    char by_str[5][15];     //  入力したものの入れ場所
     int i_ru = 0, i_lu = 0, i_by = 0, j_ru = 0, j_lu = 0, j_by = 0, i_btm = 0;
@@ -78,6 +80,7 @@ int main(void)
                         if (cur_win == ru_win) {
                         } else if( cur_win == lu_win) {
                             strcpy(lu_str[i_lu],c_str);   // Arrayに1文字を入れる
+                            mvwprintw(cur_win, i_lu + 2, 22, FIELD_RESET);  //  フィールド初期化
                             mvwprintw(cur_win, i_lu + 2, 22,lu_str[i_lu]);  // 値の再設定
                             i_lu++;        // 次の行への移動準備
                             if (i_lu == 5 ) {    //  配列の上限
@@ -95,7 +98,7 @@ int main(void)
                 case ERR :
                         if (cur_win == ru_win) {
                         } else if( cur_win == lu_win) {
-                            mvwprintw(cur_win, i_lu + 7, 10, c_str);
+                            mvwprintw(cur_win, i_lu + 2, 22, FIELD_RESET);  //  フィールド初期化
                             wmove(cur_win,i_lu + 2, 22);   //  元の行へ移動
                         } else {
                         }
@@ -108,7 +111,8 @@ int main(void)
                 case '\n' :
                         if (cur_win == ru_win) {
                             ru_str[i_ru][j_ru] = '\0';   // LFを入れる
-                            mvwprintw(cur_win, i_ru + 2, 15, ru_str[i_ru]);  //  画面に再設定
+                            mvwprintw(cur_win, i_ru + 2, 15, FIELD_RESET);  //  フィールド初期化
+                            mvwprintw(cur_win, i_ru + 2, 15, ru_str[i_ru]);  //  画面フィールドに再設定
                             i_ru++;                      //  次の入れ物へ
                             j_ru = 0;                     //  最初の桁にリセット
                             if (i_ru == 5 ) {    //  配列の上限
