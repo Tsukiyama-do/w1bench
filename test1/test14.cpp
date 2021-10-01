@@ -42,7 +42,7 @@ int main(void)
         mvwprintw(lu_win, 2,1, "道はあるようで無い :");   //   
         mvwprintw(lu_win, 3,1, "問題に対応しない   :");   //   
         mvwprintw(lu_win, 4,1, "銚子電鉄　　　　　 :");   //   
-        mvwprintw(lu_win, 5,1, "上善水ﾉｺﾞﾄｼ　　　 :");   //   
+        mvwprintw(lu_win, 5,1, "上善水のごとし　　 :");   //   
         mvwprintw(lu_win, 6,1, "魚の権利　　　　　 :");   //   
     mvwprintw(by_win, 1,1, "Body win");   // labelling body 
     mvwprintw(btm_win, 1,1, "Bottom win yMax : %d, xMax : %d", yMax, xMax);   // labelling bottom   
