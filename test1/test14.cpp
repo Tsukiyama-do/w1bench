@@ -10,6 +10,14 @@
 #define FIELD_RESET "                                   "    //  入力フィールドを初期化
 
 
+int disp_result(WINDOW bdy, char *ru, char *lu)
+{
+
+
+    mvwprintw(bdy, 2,2, ru[i]);   // ru lin 
+
+
+}
 int main(void)
 {
     setlocale(LC_ALL,"");
